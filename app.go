@@ -43,15 +43,17 @@ func (app *Lazyman) InitLayout() {
 		Y: 0,
 		W: int(w / 3),
 		H: int(h / 8),
-		Title: nil,
+		Title: &Text{
+			X:        2,
+			Y:        -1,
+			Contents: "URL",
+		},
 		Content: &Text{
 			X:        1,
 			Y:        1,
 			Contents: "https://api.nasa.com/v69/challanger",
 		},
 		Style: &BoxStyle{
-			TitleStyle:   &TextStyle{Bold: true},
-			ContentStyle: nil,
 			OnHighlight:  nil,
 			Border:       nil,
 		},

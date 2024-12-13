@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/abdessamad-zgor/lazyman/logger"
 	"github.com/gdamore/tcell/v2"
 )
 
@@ -29,23 +30,8 @@ type BoxStyle struct {
 	Border       *tcell.Style
 	OnHighlight  *tcell.Style
 	Default      *tcell.Style
-	TitleStyle   *TextStyle
-	ContentStyle *TextStyle
 }
 
-type TextStyle struct {
-	// these are relative to the containing box
-	Color      tcell.Color
-	Background tcell.Color
-	Bold       bool
-	Italic     bool
-}
-
-type Text struct {
-	X        int
-	Y        int
-	Contents string
-}
 
 func NewBox(x int, y int, w int, h int, title *Text, content *Text, style *BoxStyle, editable bool, float bool, listeners []Listener, children []Box) *Box {
 	return &Box{
@@ -96,28 +82,14 @@ func (box *Box) GetDrawF() RenderFn {
 
 		// TODO: a title should be less than width or it'll be truncated
 		if box.Title != nil {
-			titleStyle := tcell.StyleDefault
-			if box.Style.TitleStyle != nil {
-				titleStyle = tcell.StyleDefault.
-					Foreground(box.Style.TitleStyle.Color).
-					Background(box.Style.TitleStyle.Background).
-					Bold(box.Style.TitleStyle.Bold).
-					Italic(box.Style.TitleStyle.Italic)
-			}
-			screen.SetContent(box.X+1+box.Title.X, box.Y+1+box.Title.Y, rune(box.Title.Contents[0]), []rune(box.Title.Contents[1:]), titleStyle)
+            logger.Info(box.Title)
+            box.Title.Render(box)(screen)
 		}
 
-		// TODO: apply wraping and scroll
+		// TODO:scroll
 		if box.Content != nil {
-			titleStyle := tcell.StyleDefault
-			if box.Style.ContentStyle != nil {
-				titleStyle = tcell.StyleDefault.
-					Foreground(box.Style.ContentStyle.Color).
-					Background(box.Style.ContentStyle.Background).
-					Bold(box.Style.ContentStyle.Bold).
-					Italic(box.Style.ContentStyle.Italic)
-			}
-			screen.SetContent(box.X+1+box.Content.X, box.Y+1+box.Content.Y, rune(box.Content.Contents[0]), []rune(box.Content.Contents[1:]), titleStyle)
+            logger.Info(box.Content)
+            box.Content.Render(box)(screen)
 		}
 	}
 }
