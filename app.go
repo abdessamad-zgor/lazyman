@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"github.com/abdessamad-zgor/lazyman/logger"
 	"github.com/gdamore/tcell/v2"
 )
 
@@ -37,78 +39,80 @@ func (app *Lazyman) Init() {
 
 func (app *Lazyman) InitLayout() {
 	w, h := app.Screen.Size()
-	var boxes [1]Box
+	var boxes [3]Box
+
 	boxes[0] = Box{
-		X: 0,
-		Y: 0,
-		W: int(w / 3),
-		H: int(h / 8),
-		Title: &Text{
-			X:        2,
+		X:       0,
+		Y:       0,
+		W:       int(w / 3),
+		H:       int(h / 9),
+		Title:   &Text{
+			X:        3,
 			Y:        -1,
-			Contents: "URL",
+			Contents: "[1] - URL",
 		},
 		Content: &Text{
 			X:        1,
-			Y:        1,
-			Contents: "https://api.nasa.com/v69/challanger",
+			Y:        0,
+			Contents: "",
 		},
 		Style: &BoxStyle{
-			OnHighlight:  nil,
-			Border:       nil,
+			OnHighlight: nil,
+			Border:      nil,
 		},
 	}
 
-	//boxes[1] = Box{
-	//	X: 0,
-	//	Y: int(h/8) + 1,
-	//	W: int(w / 3),
-	//	H: h - int(h/8),
-	//	Title: &Text{
-	//		X:        2,
-	//		Y:        -1,
-	//		Contents: "Request",
-	//	},
-	//	Content: &Text{
-	//		X:        1,
-	//		Y:        1,
-	//		Contents: "https://api.nasa.com/v69/challanger",
-	//	},
-	//	Style: &BoxStyle{
-	//		TitleStyle:   &TextStyle{Bold: true},
-	//		ContentStyle: nil,
-	//		OnHighlight:  nil,
-	//		Border:       nil,
-	//	},
-	//}
+	boxes[1] = Box{
+		X:       0,
+		Y:       int(h/9),
+		W:       int(w / 3),
+		H:       h - int(h / 9),
+		Title:   &Text{
+			X:        3,
+			Y:        -1,
+			Contents: "[2] - Request",
+		},
+		Content: &Text{
+			X:        1,
+			Y:        0,
+			Contents: "",
+		},
+		Style: &BoxStyle{
+			OnHighlight: nil,
+			Border:      nil,
+		},
+	}
 
-	//boxes[2] = Box{
-	//	X: int(w/3) + 1,
-	//	Y: 0,
-	//	W: w - int(w/3),
-	//	H: h,
-	//	Title: &Text{
-	//		X:        2,
-	//		Y:        -1,
-	//		Contents: "Response",
-	//	},
-	//	Content: &Text{
-	//		X:        1,
-	//		Y:        1,
-	//		Contents: "https://api.nasa.com/v69/challanger",
-	//	},
-	//	Style: &BoxStyle{
-	//		TitleStyle:   &TextStyle{Bold: true},
-	//		ContentStyle: nil,
-	//		OnHighlight:  nil,
-	//		Border:       nil,
-	//	},
-	//}
+	boxes[2] = Box{
+		X:       int(w / 3),
+		Y:       0,
+		W:       w-int(w / 3),
+		H:       h,
+		Title:   &Text{
+			X:        3,
+			Y:        -1,
+			Contents: "[3] - Response",
+		},
+		Content: &Text{
+			X:        1,
+			Y:        0,
+			Contents: "",
+		},
+		Style: &BoxStyle{
+			OnHighlight: nil,
+			Border:      nil,
+		},
+	}
 
-    for i:=0; len(boxes)>i;i++ {
-        box:= boxes[i]
-        box.GetDrawF()(app.Screen)
-    }
+	for i := 0; len(boxes) > i; i++ {
+		box := boxes[i]
+		box.GetDrawF()(app.Screen)
+	}
+}
+
+func Exit() {
+	logger.Close()
+	os.Exit(0)
 }
 
 func (app *Lazyman) StartEventLoop() {
@@ -119,7 +123,7 @@ func (app *Lazyman) StartEventLoop() {
 			switch ev.Key() {
 			case tcell.KeyEscape, tcell.KeyEnter:
 				app.Screen.Fini()
-				os.Exit(0)
+				Exit()
 			case tcell.KeyCtrlL:
 				app.Screen.Sync()
 			}
