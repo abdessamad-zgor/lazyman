@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
-
 	"github.com/abdessamad-zgor/lazyman/logger"
+	"github.com/abdessamad-zgor/lazyman/gui"
 	"github.com/gdamore/tcell/v2"
 )
 
@@ -39,66 +39,66 @@ func (app *Lazyman) Init() {
 
 func (app *Lazyman) InitLayout() {
 	w, h := app.Screen.Size()
-	var boxes [3]Box
+    var boxes [3]gui.Box
 
-	boxes[0] = Box{
+	boxes[0] = gui.Box{
 		X:       0,
 		Y:       0,
-		W:       int(w / 3),
+		W:       2 * int(w / 5),
 		H:       int(h / 9),
-		Title:   &Text{
+		Title:   &gui.Text{
 			X:        3,
 			Y:        -1,
-			Contents: "[1] - URL",
+			Contents: "[1] URL",
 		},
-		Content: &Text{
+		Content: &gui.Text{
 			X:        1,
 			Y:        0,
 			Contents: "",
 		},
-		Style: &BoxStyle{
+		Style: &gui.BoxStyle{
 			OnHighlight: nil,
 			Border:      nil,
 		},
 	}
 
-	boxes[1] = Box{
+	boxes[1] = gui.Box{
 		X:       0,
 		Y:       int(h/9),
-		W:       int(w / 3),
+		W:       2 * int(w / 5),
 		H:       h - int(h / 9),
-		Title:   &Text{
+		Title:   &gui.Text{
 			X:        3,
 			Y:        -1,
-			Contents: "[2] - Request",
+			Contents: "[2] Request",
 		},
-		Content: &Text{
+		Content: &gui.Text{
 			X:        1,
 			Y:        0,
 			Contents: "",
 		},
-		Style: &BoxStyle{
+		Style: &gui.BoxStyle{
 			OnHighlight: nil,
 			Border:      nil,
 		},
 	}
 
-	boxes[2] = Box{
-		X:       int(w / 3),
+	boxes[2] = gui.Box{
+		X:       2 * int(w / 5),
 		Y:       0,
-		W:       w-int(w / 3),
+		W:       w-2 * int(w / 5),
 		H:       h,
-		Title:   &Text{
+		Title:   &gui.Text{
 			X:        3,
 			Y:        -1,
-			Contents: "[3] - Response",
+			Contents: "[3] Response",
 		},
-		Content: &Text{
+		Content: &gui.Text{
 			X:        1,
 			Y:        0,
 			Contents: "",
 		},
-		Style: &BoxStyle{
+		Style: &gui.BoxStyle{
 			OnHighlight: nil,
 			Border:      nil,
 		},
@@ -106,7 +106,7 @@ func (app *Lazyman) InitLayout() {
 
 	for i := 0; len(boxes) > i; i++ {
 		box := boxes[i]
-		box.GetDrawF()(app.Screen)
+		box.Render(app.Screen)
 	}
 }
 
