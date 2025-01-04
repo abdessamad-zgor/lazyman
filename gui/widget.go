@@ -17,8 +17,12 @@ type Widget struct {
 
 func (widget Widget) Render(screen tcell.Screen, context lcontext.Context) {
     widget.Box.Render(screen)
-    widget.Title.Render(&widget.Box, screen)
-    widget.Content.Render(&widget.Box, screen)
+    if widget.Title != nil {
+        widget.Title.Render(&widget.Box, screen)
+    }
+    if widget.Content != nil {
+        widget.Content.Render(&widget.Box, screen)
+    }
 }
 
 

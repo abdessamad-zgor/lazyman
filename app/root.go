@@ -10,7 +10,7 @@ import (
 	"github.com/gdamore/tcell/v2"
 )
 
-type Layout struct {
+type App struct {
 	Screen   tcell.Screen
 	Context  lcontext.Context
 	Widgets  []gui.Widget
@@ -22,13 +22,13 @@ func Exit() {
 	os.Exit(0)
 }
 
-func (app *Layout) Render() {
-    for _, widget := range app.Widgets {
-        widget.Render(app.Screen, app.Context)
-    }
+func (app *App) Render() {
+	for _, widget := range app.Widgets {
+		widget.Render(app.Screen, app.Context)
+	}
 }
 
-func (app *Layout) StartEventLoop() {
+func (app *App) StartEventLoop() {
 	for {
 		ev := app.Screen.PollEvent()
 		switch ev := ev.(type) {
@@ -53,44 +53,23 @@ func Init() {
 		os.Exit(1)
 	}
 	context := lcontext.InitContext()
+	if e := screen.Init(); e != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", e)
+		os.Exit(1)
+	}
 	w, h := screen.Size()
-	urlInput := gui.CreateWidget(
-		0,
-		0,
-		2*int(w/5),
-		int(h/9),
-		&gui.BoxStyle{Border: nil},
-	)
-	requestWidget := gui.CreateWidget(
-		0,
-		int(h/9),
-		2*int(w/5),
-		h-int(h/9),
-		&gui.BoxStyle{Border: nil},
-	)
-	responseWidget := gui.CreateWidget(
-		2*int(w/5),
-		0,
-		w-2*int(w/5),
-		h,
-		&gui.BoxStyle{
-			Border: nil,
-		},
-	)
-
-	layout := Layout{
+	urlInput := InitUrlWidget(w, h)
+    requestWidget := InitRequestWidget(w, h)
+    responseWidget := InitResponseWidget(w, h)
+	app := App{
 		Screen:  screen,
 		Widgets: []gui.Widget{urlInput, requestWidget, responseWidget},
 		Context: context,
 	}
-	if e := layout.Screen.Init(); e != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", e)
-		os.Exit(1)
-	}
 
-	layout.Screen.SetStyle(tcell.StyleDefault)
-	layout.Screen.Clear()
-    layout.Render()
-    layout.Screen.Show()
-    layout.StartEventLoop()
+	app.Screen.SetStyle(tcell.StyleDefault)
+	app.Screen.Clear()
+	app.Render()
+	app.Screen.Show()
+	app.StartEventLoop()
 }

@@ -19,7 +19,7 @@ func init() {
 		if err != nil {
 			panic(err)
 		}
-		logger = log.New(logFile, "", log.Ltime)
+		logger = log.New(logFile, "", log.Ltime|log.Ldate)
 	}
 }
 

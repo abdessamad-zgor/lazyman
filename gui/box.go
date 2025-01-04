@@ -1,6 +1,7 @@
 package gui
 
 import (
+	"github.com/abdessamad-zgor/lazyman/logger"
 	_ "github.com/abdessamad-zgor/lazyman/logger"
 	"github.com/gdamore/tcell/v2"
 )
@@ -40,6 +41,7 @@ func (box Box) Render(screen tcell.Screen) {
 	for xi := range box.W {
 		for yj := range box.H {
 			borderX, borderY := xi+box.X, yj+box.Y
+            logger.Info(borderX, borderY)
 			if borderX == box.X || borderX == box.X+box.W-1 {
 				screen.SetContent(borderX, borderY, tcell.RuneVLine, nil, boxStyle)
 			}

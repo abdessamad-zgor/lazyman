@@ -1,4 +1,4 @@
 #!/usr/bin/bash
 
-LAZYMAN_DEV=true
+export LAZYMAN_DEV=true
 alias lazyman="go build && ./lazyman"
