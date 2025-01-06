@@ -1,10 +1,10 @@
-package gui
+package state
 
 import (
-	"github.com/abdessamad-zgor/lazyman/lcontext"
+	"github.com/gdamore/tcell/v2"
 )
 
-type Event string
+type Event = string
 
 const (
 	Edit        Event = "edit"
@@ -18,6 +18,7 @@ const (
 	ToggleFloat Event = "toggle-float"
 )
 
-type Callback func(context lcontext.Context)
+type Callback = func(context Context)
 
-type EventMap map[Event]Callback
+type EventMap = map[Event]Callback
+type Keybindings = map[tcell.Key]Event

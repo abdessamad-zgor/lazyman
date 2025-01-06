@@ -1,13 +1,13 @@
 package gui
 
 import (
-	"github.com/abdessamad-zgor/lazyman/lcontext"
+	"github.com/abdessamad-zgor/lazyman/state"
 	"github.com/gdamore/tcell/v2"
 )
 
 type Widget struct {
 	Box      Box
-	EventMap EventMap
+	EventMap state.EventMap
 	Marker   rune
 	Title    *Text
 	Content  *Text
@@ -15,7 +15,7 @@ type Widget struct {
 	Parent   *Widget
 }
 
-func (widget Widget) Render(screen tcell.Screen, context lcontext.Context) {
+func (widget Widget) Render(screen tcell.Screen, context state.Context) {
     widget.Box.Render(screen)
     if widget.Title != nil {
         widget.Title.Render(&widget.Box, screen)
@@ -29,7 +29,7 @@ func (widget Widget) Render(screen tcell.Screen, context lcontext.Context) {
 func CreateWidget(x int, y int, w int, h int, boxStyle *BoxStyle) Widget {
     return Widget{
         Box: NewBox(x, y, w, h, boxStyle),
-        EventMap: make(EventMap),
+        EventMap: make(state.EventMap),
     }
 }
 
@@ -58,11 +58,11 @@ func (widget *Widget) SetContent(content string, x int, y int) {
     }
 }
 
-func (widget *Widget) SetEventListner(event Event, cb Callback) {
+func (widget *Widget) SetEventListner(event state.Event, cb state.Callback) {
     widget.EventMap[event] = cb
 }
 
-func (widget Widget) GetEventListner(event Event) (Callback, bool) {
+func (widget Widget) GetEventListner(event state.Event) (state.Callback, bool) {
     listner, ok := widget.EventMap[event]
     return listner, ok
 }

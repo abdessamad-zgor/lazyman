@@ -1,4 +1,4 @@
-package lcontext
+package state
 
 import (
 	"runtime"
@@ -9,9 +9,15 @@ type Context struct {
 	Config Config
 }
 
-type State map[string]any
+type StateKey = string
 
-type Config map[string]any
+const (
+    SelectedWidget StateKey = "selected-widget"
+)
+
+type State = map[string]any
+
+type Config = map[string]any
 
 func InitContext() Context {
 	return Context{}
