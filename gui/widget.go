@@ -26,7 +26,7 @@ func (widget Widget) Render(screen tcell.Screen, context state.Context) {
 }
 
 
-func CreateWidget(x int, y int, w int, h int, boxStyle *BoxStyle) Widget {
+func CreateWidget(marker rune, x int, y int, w int, h int, boxStyle *BoxStyle) Widget {
     return Widget{
         Box: NewBox(x, y, w, h, boxStyle),
         EventMap: make(state.EventMap),
@@ -58,11 +58,11 @@ func (widget *Widget) SetContent(content string, x int, y int) {
     }
 }
 
-func (widget *Widget) SetEventListner(event state.Event, cb state.Callback) {
+func (widget *Widget) SetEventListner(event state.EventName, cb state.Callback) {
     widget.EventMap[event] = cb
 }
 
-func (widget Widget) GetEventListner(event state.Event) (state.Callback, bool) {
+func (widget Widget) GetEventListner(event state.EventName) (state.Callback, bool) {
     listner, ok := widget.EventMap[event]
     return listner, ok
 }

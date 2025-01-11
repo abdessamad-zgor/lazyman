@@ -38,7 +38,7 @@ func (app *App) StartEventListner() {
 			key := ev.Key()
             event, ok := app.Keybindings[key]
             if ok {
-                app.EventChannel <- event
+                app.EventChannel <- state.Event{event, key}
             }
 		case *tcell.EventResize:
 			app.Screen.Sync()
@@ -50,7 +50,7 @@ func (app *App) StartEventLoop() {
 	for {
         select {
         case event :=<- app.EventChannel:
-            callback, ok := app.EventMap[event]
+            callback, ok := app.EventMap[event.Name]
             if ok {
                 callback(app.Context)
             }
