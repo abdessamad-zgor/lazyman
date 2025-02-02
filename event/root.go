@@ -2,6 +2,7 @@ package event
 
 import (
 	"github.com/gdamore/tcell/v2"
+    lcontext "github.com/abdessamad-zgor/lazyman/context"
 )
 
 type EventName = string
@@ -27,21 +28,23 @@ type Event struct {
 	Key  tcell.Key
 }
 
-type Callback = func(context Context) func(event Event)
+type Callback = func(context lcontext.Context, event Event)
 
 type EventMap = map[EventName]Callback
 type Keybindings = map[tcell.Key]EventName
 
 var AppEventMap EventMap
 
-func init() {
-
-}
-
 func SetDefaultEventMap() EventMap {
-	appEventMap := make(EventName)
-	appEventMap[Edit] = func(appcontext lcontext.Context, event Event) {
-		// Get Selected Widget
-
+	appEventMap := make(EventMap)
+	appEventMap[Key] = func(appcontext lcontext.Context, event Event) {
+        // send rune to widget
+        // key := event.Key()
 	}
+
+    appEventMap[Left] = func(appcontext lcontext.Context, event Event) {
+
+    }
+        
+    return appEventMap
 }
